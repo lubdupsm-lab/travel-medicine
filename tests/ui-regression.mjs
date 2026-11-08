@@ -81,14 +81,22 @@ for (const w of widths) {
     dir: document.documentElement.dir,
     group: document.querySelector('.tf-btn.active')?.dataset.tf,
     layer: document.getElementById('layerSelect').value,
-    discEn: document.querySelector('#safetyBanner p[lang="en"]').innerText.includes('educational reference'),
-    discAr: document.querySelector('#safetyBanner p[lang="ar"]').innerText.includes('مرجع تعليمي')
+    discEn: document.querySelector('#safetyBanner p[lang="en"]').textContent.includes('educational reference'),
+    discAr: document.querySelector('#safetyBanner p[lang="ar"]').textContent.includes('مرجع تعليمي'),
+    compact: document.getElementById('discDetails').hidden === true
   }));
   check('shared URL country', state.h2 === 'Saudi Arabia', state.h2);
   check('shared URL lang case', state.lang === 'ar' && state.dir === 'rtl', state.lang);
   check('shared URL group case', state.group === 'pregnant', state.group);
   check('shared URL layer case', state.layer === 'malaria', state.layer);
   check('disclaimer both languages', state.discEn && state.discAr);
+  check('disclaimer starts compact', state.compact === true);
+  await page.click('#discToggle');
+  check('disclaimer expands', await page.$eval('#discToggle', el => el.getAttribute('aria-expanded')) === 'true');
+  await page.click('#discDismiss');
+  check('disclaimer dismiss keeps reopen', await page.$eval('#discReopen', el => el.hidden) === false);
+  const urgentStill = await page.evaluate(() => document.querySelector('#tab-country .fever-box, #tab-country .verify-flag') !== null || document.querySelector('#tab-country h2')?.textContent === 'Saudi Arabia');
+  check('dismiss does not remove country card', urgentStill);
   check('malformed extra params no error', errors.length === 0, errors.join(';'));
   const unknown = await page.evaluate(() => {
     history.pushState(null, '', '?dest=ZZZ&group=nope&layer=nope&lang=zz');
@@ -114,8 +122,11 @@ for (const w of widths) {
   const cote = await page.$eval('#tab-country h2', el => el.textContent);
   check('accent search keyboard', cote === "Côte d'Ivoire", cote);
   await page.evaluate(() => { si.value = 'السعودية'; runSearch(); });
+  await page.evaluate(() => pickSearch('SAU'));
+  check('arabic search selects Saudi Arabia', await page.$eval('#tab-country h2', el => el.textContent) === 'Saudi Arabia');
+  await page.evaluate(() => { si.value = 'ليستدولة'; runSearch(); });
   const arSearch = await page.evaluate(() => document.getElementById('searchResults').innerText);
-  check('arabic query does not throw', /No matching destination|لا توجد وجهة/.test(arSearch), arSearch.slice(0, 80));
+  check('unknown arabic query does not throw', /No matching destination|لا توجد وجهة/.test(arSearch), arSearch.slice(0, 80));
   for (const layer of ['overall', 'malaria', 'yf', 'arbo', 'vaccine']) {
     await page.select('#layerSelect', layer);
     const legend = await page.$eval('#mapLegend', el => el.innerText.length);

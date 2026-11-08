@@ -16,6 +16,8 @@ const failures = [];
 const check = (name, ok) => { if (!ok) failures.push(name); };
 
 check('182 records', data.length === 182);
+check('arabic names for every record', data.every(c => c.name_ar && c.name_ar.length > 1));
+check('no false all-clear sentence', !html.includes('No significant travel-related infectious disease risk'));
 check('112 explicit unverified flags kept', data.filter(c => c.unverified).length === 112);
 for (const iso of ['LKA', 'CHN', 'BLZ', 'PRY', 'TLS', 'SUR']) {
   check(iso + ' not endemic malaria', by[iso].malaria_level === 'none' && !(by[iso].risks || []).includes('malaria'));
