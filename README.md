@@ -1,12 +1,12 @@
 # Travel Medicine Reference Map
 
-Static site for **Travel Medicine Reference Map — Dr. Zeyad Halawani**. The page is the supplied `index.html` with its medical text and interface unchanged. Scripts, styles, and map data are inline. The only external request is the Google Fonts stylesheet.
+Static site for **Travel Medicine Reference Map — Dr. Zeyad Halawani**. Scripts, styles, and map data are inline. The only external request is the Google Fonts stylesheet. Checked clinical lines are linked on the card. 112 of 182 destinations stay explicitly unreviewed. This is not a certification of every record.
 
-GitHub Pages project URL, after the steps below: [https://lubdupsm-lab.github.io/travel-medicine/](https://lubdupsm-lab.github.io/travel-medicine/)
+The live site is already publishing `main`: [https://lubdupsm-lab.github.io/travel-medicine/](https://lubdupsm-lab.github.io/travel-medicine/). Review branches are not the live site until they are merged.
 
 ## Publish with GitHub Pages
 
-Pages is not turned on in this repository yet. This branch does not publish the site. Merge into `main` first, then a repository admin enables Pages from `main` so the unmerged branch is not the live site.
+Pages is already set to deploy from `main` at `/`. Do not point Pages at an unmerged branch.
 
 1. Merge the pull request into `main`.
 2. Open **Settings → Pages** for [lubdupsm-lab/travel-medicine](https://github.com/lubdupsm-lab/travel-medicine).
