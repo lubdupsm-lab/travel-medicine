@@ -81,7 +81,7 @@ for (const w of widths) {
     dir: document.documentElement.dir,
     group: document.querySelector('.tf-btn.active')?.dataset.tf,
     layer: document.getElementById('layerSelect').value,
-    discEn: document.querySelector('#safetyBanner p[lang="en"]').textContent.includes('educational reference'),
+    discEn: /educational reference/i.test(document.querySelector('#safetyBanner p[lang="en"]').textContent),
     discAr: document.querySelector('#safetyBanner p[lang="ar"]').textContent.includes('مرجع تعليمي'),
     compact: document.getElementById('discDetails').hidden === true
   }));
@@ -139,7 +139,7 @@ for (const w of widths) {
   }
   await page.click('[data-tf="pregnant"]');
   const flags = await page.evaluate(() => document.querySelector('#tab-country').innerText);
-  check('pregnancy precaution visible', /precaution/i.test(flags) && /not a routine pregnancy choice/i.test(flags));
+  check('pregnancy precaution visible', /precaution/i.test(flags) && /not routinely recommended in pregnancy/i.test(flags));
   await page.click('#resetBtn');
   const cleared = await page.evaluate(() => ({ h2: document.querySelector('#tab-country h2'), group: document.querySelector('.tf-btn.active').dataset.tf, layer: document.getElementById('layerSelect').value }));
   check('reset clears destination and filters', !cleared.h2 && cleared.group === 'standard' && cleared.layer === 'overall', JSON.stringify(cleared));
@@ -174,7 +174,7 @@ for (const w of widths) {
   await page.evaluate(() => exportSummary());
   const pop = await popupPromise;
   const sheet = await pop.evaluate(() => document.body.innerText);
-  check('sheet keeps disclaimer', sheet.includes('educational reference') && sheet.includes('مرجع تعليمي'));
+  check('sheet keeps disclaimer', /educational reference/i.test(sheet) && sheet.includes('مرجع تعليمي') && /individualized pre-travel consultation/i.test(sheet));
   check('sheet keeps unverified', /unreviewed/i.test(sheet));
   await pop.close();
   await page.evaluate(() => { lang = 'ar'; applyLang(); selectCountry('SAU', { refresh: true }); });
@@ -188,12 +188,51 @@ for (const w of widths) {
   check('session errors empty', errors.length === 0, errors.join(';'));
   await page.evaluate(() => { const t=document.getElementById('toast'); if(t) t.remove(); });
   await page.screenshot({ path: '/opt/cursor/artifacts/polish_desktop_ar.png' });
-  await page.evaluate(() => { lang = 'en'; applyLang(); const t=document.getElementById('toast'); if(t) t.remove(); });
+  const sauAr = await page.evaluate(() => ({
+    edition: document.body.innerText.includes('1447'),
+    tablesOpen: document.querySelector('details.saudi-edition')?.open === true,
+    summary: document.querySelector('details.saudi-edition summary')?.textContent || ''
+  }));
+  check('Saudi edition visible in Arabic', /1447/.test(sauAr.edition ? '1447' : '') && /1447/.test(sauAr.summary), JSON.stringify(sauAr));
+  check('Saudi historical tables start closed', sauAr.tablesOpen === false);
+  await page.evaluate(() => { lang = 'en'; applyLang(); selectCountry('ETH', { refresh: true }); const t=document.getElementById('toast'); if(t) t.remove(); });
+  const eth = await page.evaluate(() => document.querySelector('#tab-country').innerText);
+  check('Ethiopia card includes Addis at 2500', /Addis Ababa/.test(eth) && /2,500/.test(eth) && !/2,000/.test(eth) && !/low risk/i.test(eth));
+  const ethBadge = await page.evaluate(() => [...document.querySelectorAll('.vaccine-item')].find(el => /Yellow Fever/.test(el.textContent))?.textContent || '');
+  check('Ethiopia YF badge is not required', !/required/i.test(ethBadge), ethBadge);
+  await page.evaluate(() => selectCountry('BOL', { refresh: true }));
+  const bol = await page.evaluate(() => document.querySelector('#tab-country').innerText);
+  check('Bolivia shows source conflict', /sources differ/i.test(bol) && /verify before travel/i.test(bol));
+  await page.evaluate(() => selectCountry('PAK', { refresh: true }));
+  const pak = await page.evaluate(() => document.querySelector('#tab-country').innerText);
+  check('Pakistan includes all cities', /including all cities/i.test(pak) && /2,500/.test(pak));
+  await page.evaluate(() => selectCountry('AUS', { refresh: true }));
+  const aus = await page.evaluate(() => document.querySelector('#tab-country').innerText);
+  check('Australia JE is localized', /Outer Torres Strait/i.test(aus) && /Japanese Encephalitis/i.test(aus));
+  await page.evaluate(() => { sessionStorage.removeItem('tmDisc'); document.getElementById('safetyBanner').hidden = false; document.getElementById('discReopen').hidden = true; setDiscOpen(false); const t=document.getElementById('toast'); if(t) t.remove(); });
+  await page.setViewport({ width: 1280, height: 800 });
+  await page.screenshot({ path: '/opt/cursor/artifacts/disclaimer_collapsed_desktop.png' });
+  await page.evaluate(() => setDiscOpen(true));
+  await page.screenshot({ path: '/opt/cursor/artifacts/disclaimer_expanded_desktop.png' });
+  const printDisc = await page.evaluate(() => {
+    const details = document.getElementById('discDetails');
+    const before = details.hidden;
+    return { before, full: document.getElementById('discFull').textContent.includes('individualized pre-travel consultation') };
+  });
+  check('expanded disclaimer has full warning', printDisc.full === true);
+  await page.evaluate(() => { setDiscOpen(false); const t=document.getElementById('toast'); if(t) t.remove(); });
   await page.screenshot({ path: '/opt/cursor/artifacts/polish_desktop_en.png' });
   await page.setViewport({ width: 390, height: 844 });
   await page.evaluate(() => { const t=document.getElementById('toast'); if(t) t.remove(); });
+  await page.screenshot({ path: '/opt/cursor/artifacts/disclaimer_collapsed_mobile.png', fullPage: false });
   await page.screenshot({ path: '/opt/cursor/artifacts/polish_mobile_en.png', fullPage: false });
   await page.emulateMediaType('print');
+  const printed = await page.evaluate(() => {
+    const d = document.getElementById('discDetails');
+    const cs = getComputedStyle(d);
+    return { display: cs.display, text: d.textContent.includes('individualized pre-travel consultation') };
+  });
+  check('print shows full disclaimer', printed.display !== 'none' && printed.text, JSON.stringify(printed));
   await page.screenshot({ path: '/opt/cursor/artifacts/polish_print_en.png', fullPage: false });
   await page.close();
 }

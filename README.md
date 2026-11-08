@@ -1,6 +1,6 @@
 # Travel Medicine Reference Map
 
-Static site for **Travel Medicine Reference Map — Dr. Zeyad Halawani**. The page is the supplied `index.html` with its medical text and interface unchanged. Scripts, styles, and map data are inline. The only external request is the Google Fonts stylesheet.
+Static site for **Travel Medicine Reference Map — Dr. Zeyad Halawani**. Scripts, styles, and map data are inline. The only external request is the Google Fonts stylesheet. Checked clinical lines are linked on the card. 112 of 182 destinations stay explicitly unreviewed. This is not a certification of every record.
 
 The live site is already publishing `main`: [https://lubdupsm-lab.github.io/travel-medicine/](https://lubdupsm-lab.github.io/travel-medicine/). Review branches are not the live site until they are merged.
 
