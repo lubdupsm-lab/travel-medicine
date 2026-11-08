@@ -30,7 +30,7 @@ body.ar .header-left p{text-transform:none;letter-spacing:0}
 .header-right{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .source-badge{font-size:.62rem;color:var(--gold);border:1px solid var(--border);padding:4px 9px;border-radius:20px}
 .lang-toggle{display:flex;border:1px solid var(--gold);border-radius:20px;overflow:hidden;cursor:pointer}
-.lang-toggle span{padding:5px 14px;font-size:.74rem;font-weight:600;transition:all .2s}
+.lang-toggle button{padding:5px 14px;font-size:.74rem;font-weight:600;transition:all .2s;border:0;background:transparent;font-family:inherit;cursor:pointer;color:var(--gold)}
 .lang-toggle .lt-active{background:var(--gold);color:var(--navy)}
 .lang-toggle .lt-inactive{color:var(--gold)}
 .app{display:grid;grid-template-columns:1fr 400px;height:calc(100vh - 70px)}
@@ -48,7 +48,8 @@ body.ar .search-icon{left:auto;right:11px}
 .traveler-filter{display:flex;gap:6px;flex-wrap:wrap}
 .tf-btn{padding:6px 12px;border-radius:6px;border:1px solid var(--border);background:transparent;color:rgba(255,255,255,.65);font-size:.72rem;cursor:pointer;font-family:inherit;transition:all .2s;display:flex;align-items:center;gap:5px}
 .tf-btn:hover,.tf-btn.active{background:var(--gold);color:var(--navy);border-color:var(--gold);font-weight:600}
-#mapContainer{flex:1;position:relative;background:var(--navy);min-height:420px}
+#mapContainer{flex:1;position:relative;background:var(--navy);min-height:240px;width:100%;max-width:100%;overflow:hidden}
+#mapContainer svg{max-width:100%;width:100%!important;height:auto}
 .datamaps-hoverover{background:var(--navy-mid)!important;border:1px solid var(--gold)!important;color:var(--white)!important;font-family:inherit!important;padding:8px 12px!important;border-radius:6px!important;font-size:.78rem!important}
 .map-legend{padding:10px 20px;background:var(--navy-mid);border-top:1px solid var(--border);display:flex;gap:14px;flex-wrap:wrap;font-size:.68rem}
 .layer-control{display:flex;align-items:center;gap:8px}
@@ -109,7 +110,7 @@ body.ar .ref-table th{text-align:right;letter-spacing:0;text-transform:none}
 .specialist-list li{font-size:.76rem;padding:8px 12px;background:rgba(231,76,60,.07);border-left:2px solid #e74c3c;border-radius:0 6px 6px 0;color:rgba(255,255,255,.8);line-height:1.4}
 body.ar .specialist-list li{border-left:none;border-right:2px solid #e74c3c;border-radius:6px 0 0 6px}
 .footer-credit{margin-top:22px;padding-top:14px;border-top:1px solid var(--border);font-size:.64rem;color:rgba(255,255,255,.3);line-height:1.7}
-@media print{body{background:#fff;color:#000}header,.map-side,.tabs,.btn-export,.btn-ghost{display:none!important}.app{display:block;height:auto}.detail-panel{padding:0}.detail-panel *{color:#000!important}.counseling-list li,.vaccine-item,.malaria-box,.alert-box{background:#f5f5f5!important;border-color:#ccc!important}}
+@media print{body{background:#fff;color:#000}header,.map-side,.tabs,.btn-export,.btn-ghost,#toast{display:none!important}.app{display:block;height:auto}.detail-panel{padding:0}.detail-panel *{color:#000!important}.counseling-list li,.vaccine-item,.malaria-box,.alert-box{background:#f5f5f5!important;border-color:#ccc!important}}
 
 a.source-badge{text-decoration:none;display:inline-flex;align-items:center}
 a.source-badge:hover{border-color:var(--gold)}
@@ -122,7 +123,8 @@ body.ar .safety-banner h2{font-family:'IBM Plex Sans Arabic',serif}
 .group-context{flex-basis:100%;margin:0;font-size:.72rem;line-height:1.45;color:rgba(248,249,250,.75)}
 .btn-ghost{background:transparent;color:var(--gold);border:1px solid var(--border);border-radius:7px;padding:6px 12px;font-family:inherit;font-size:.72rem;cursor:pointer}
 .btn-ghost:hover{border-color:var(--gold)}
-#searchResults{position:absolute;top:42px;left:0;right:0;background:var(--navy-mid);border:1px solid var(--gold);border-radius:8px;max-height:240px;overflow-y:auto;z-index:50;display:none}
+#searchResults{position:absolute;top:42px;left:0;right:0;background:var(--navy-mid);border:1px solid var(--gold);border-radius:8px;max-height:240px;overflow-y:auto;z-index:30;display:none}
+.traveler-filter,.layer-control,#resetBtn,#copyLinkBtn{position:relative;z-index:40}
 .search-opt{padding:9px 13px;cursor:pointer;border-bottom:1px solid rgba(201,168,76,.15);font-size:.8rem}
 .search-opt.active,.search-opt:hover{background:rgba(201,168,76,.16)}
 .search-region{opacity:.5;font-size:.7rem}
@@ -140,6 +142,28 @@ body.ar .safety-banner h2{font-family:'IBM Plex Sans Arabic',serif}
 @media(max-width:1000px){.app,body.ar .app{height:auto}#mapContainer{height:52vh}}
 @media(pointer:coarse){.tf-btn,.btn-ghost,.btn-export,.tab{min-height:44px}}
 @media print{.tf-alert,.fever-box,.alt-box,.verify-flag,.source-notes,.needs-check,.safety-banner{display:block!important}.btn-ghost{display:none!important}.safety-banner,.safety-banner h2,.safety-banner p{background:#fff!important;color:#000!important;-webkit-text-fill-color:#000!important;border:2px solid #000!important}}
+.safety-banner{font-size:.84rem;line-height:1.45;padding:10px 22px 12px}
+.safety-banner h2{font-size:.95rem;margin:0 0 6px}
+.disc-cols{display:grid;gap:8px 22px}
+@media(min-width:960px){.disc-cols{grid-template-columns:1fr 1fr;align-items:start}}
+.app,.map-side,.controls,.search-wrap,.detail-panel,#mapContainer{max-width:100%}
+.app{grid-template-columns:minmax(0,1.45fr) minmax(320px,430px);min-height:0;width:100%}
+.map-side{min-width:0}
+body.ar .app{grid-template-columns:minmax(320px,430px) minmax(0,1.45fr)}
+.map-side,.detail-panel{min-height:0}
+.map-legend{font-size:.75rem;line-height:1.35;flex-shrink:0}
+.leg-item{min-width:0}
+.header-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.drug-name,.malaria-drug{color:var(--offwhite);font-weight:500;line-height:1.45}
+.drug-name{font-size:.8rem}
+.empty-state{opacity:.72}
+.footer-credit{font-size:.72rem;color:rgba(248,249,250,.62)}
+.tab{color:rgba(248,249,250,.82)}
+.tf-btn{color:rgba(248,249,250,.88)}
+.search-wrap input:focus,.search-wrap input:focus-visible{outline:2px solid var(--gold-light);outline-offset:1px;border-color:var(--gold)}
+body.ar .drug-name,body.ar .vaccine-name,body.ar .keep-ltr,body.ar .ref-table td.keep-ltr{direction:ltr;unicode-bidi:isolate;text-align:left}
+@media(max-width:1000px){.app,body.ar .app{grid-template-columns:1fr;height:auto;min-height:0}.map-side{overflow:visible;border-right:0;border-left:0}#mapContainer{height:46vh;min-height:240px}}
+@media(max-width:700px){header{padding:12px 14px}.header-left h1{font-size:1.15rem}.safety-banner{padding:10px 14px;font-size:.8rem}.controls{padding:10px 12px}.search-wrap{flex-basis:100%;min-width:0;max-width:none}.detail-panel{padding:14px 12px}.country-header{flex-wrap:wrap}.country-header h2{font-size:1.35rem}.kit-grid{grid-template-columns:1fr}.ref-table{display:block;overflow-x:auto}.source-badge{font-size:.68rem}}
 </style>
 </head>
 <body>
@@ -149,13 +173,18 @@ body.ar .safety-banner h2{font-family:'IBM Plex Sans Arabic',serif}
     <a class="source-badge" href="https://www.cdc.gov/yellow-book/hcp/travel-associated-infections-diseases/malaria.html" target="_blank" rel="noopener noreferrer">CDC Yellow Book</a>
     <a class="source-badge" href="https://www.who.int/health-topics/travel-and-health" target="_blank" rel="noopener noreferrer">WHO travel health</a>
     <span class="source-badge source-snapshot" id="snapshotBadge">Checked topics: 8 Nov 2026</span>
-    <div class="lang-toggle" id="langToggle"><span class="lt-inactive" data-lang="en">EN</span><span class="lt-inactive" data-lang="ar">ع</span></div>
+    <div class="lang-toggle" id="langToggle" role="group" aria-label="Language">
+      <button type="button" class="lt-inactive" data-lang="en" aria-pressed="false">EN</button>
+      <button type="button" class="lt-inactive" data-lang="ar" aria-pressed="false">ع</button>
+    </div>
   </div>
 </header>
 <div class="safety-banner" id="safetyBanner" role="note" aria-labelledby="disclaimerHeading">
   <h2 id="disclaimerHeading">General disclaimer · تنبيه عام</h2>
+  <div class="disc-cols">
   <p lang="en" dir="ltr">This map is an educational reference to support clinicians. It is not a diagnosis, a prescription, an individual pre-travel assessment, or official border clearance. Disease advice, entry rules, and outbreak notices can change. Before you act, confirm the linked official guidance for this itinerary and this patient. Naming CDC, WHO, a ministry, or the author’s workplace is not an endorsement by that institution. Statements checked on 8 November 2026 are selected lines only, not a review of all 182 destinations.</p>
   <p lang="ar" dir="rtl">هذه الخريطة مرجع تعليمي لمساعدة الأطباء. ليست تشخيصًا ولا وصفة ولا تقييمًا فرديًا قبل السفر ولا تصريحًا رسميًا بعبور الحدود. قد تتغير نصائح الأمراض وشروط الدخول وإشعارات الفاشيات. قبل التصرف، تأكد من الإرشاد الرسمي المرتبط لهذا المسار وهذا المريض. ذكر CDC أو منظمة الصحة العالمية أو وزارة أو جهة عمل المؤلف لا يعني اعتماد تلك الجهة. ما فُحص في 8 نوفمبر 2026 فقرات محددة فقط، وليس مراجعة لكل الوجهات الـ182.</p>
+  </div>
 </div>
 <div class="app">
   <div class="map-side">
@@ -253,14 +282,14 @@ function initMap(){
 function showToast(msg, type){
   let el=document.getElementById('toast');
   if(!el){ el=document.createElement('div'); el.id='toast'; document.body.appendChild(el);
-    el.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:9999;padding:10px 20px;border-radius:8px;font-family:inherit;font-size:.85rem;font-weight:600;box-shadow:0 6px 24px rgba(0,0,0,.35);transition:opacity .3s,transform .3s;pointer-events:none;';
+    el.style.cssText='position:fixed;right:16px;bottom:16px;z-index:9999;padding:10px 16px;border-radius:8px;font-family:inherit;font-size:.85rem;font-weight:600;box-shadow:0 6px 24px rgba(0,0,0,.35);pointer-events:none;max-width:min(92vw,280px);text-align:center;';
   }
   el.textContent=msg;
   el.style.background= type==='error' ? '#c0392b' : (type==='success' ? '#27ae60' : '#1e3358');
   el.style.color='#fff';
-  el.style.opacity='1'; el.style.transform='translateX(-50%) translateY(0)';
+  el.style.opacity='1';
   clearTimeout(el._t);
-  el._t=setTimeout(()=>{ el.style.opacity='0'; el.style.transform='translateX(-50%) translateY(10px)'; }, 2200);
+  el._t=setTimeout(()=>{ el.style.opacity='0'; }, 2200);
 }
 function updateMapColors(opts){
   opts=opts||{};
@@ -302,7 +331,7 @@ function travelerAlert(c){
   if(travelerType==='child'){
     bits.push(P?'الدوكسيسيكلين ممنوع تحت سن 8 سنوات.':'Doxycycline is contraindicated under 8 years of age.');
     bits.push(P?'لقاح الحمى الصفراء لا يُعطى تحت 6 أشهر. العمر 6–8 أشهر احتياط ويُفضّل تأجيل السفر.':'Yellow fever vaccine is contraindicated under 6 months. Age 6–8 months is a precaution; postpone travel when possible.');
-    if(malariaPossible) bits.push(P?'طفل أقل من سنتين إلى منطقة انتقال ملاريا: حوّلي إلى مختص. حليب الأم لا يغني عن وقاية الرضيع.':'A child under 2 years going where malaria is transmitted needs specialist referral. Breast milk does not protect the infant.');
+    if(malariaPossible) bits.push(P?'طفل أقل من سنتين إلى منطقة انتقال ملاريا: حوّل إلى مختص. حليب الأم لا يغني عن وقاية الرضيع.':'A child under 2 years going where malaria is transmitted needs specialist referral. Breast milk does not protect the infant.');
     return (P?'👶 طفل أقل من سنتين: ':'👶 Child <2 years: ')+bits.join(' ');
   }
   if(travelerType==='immuno'){
@@ -449,7 +478,7 @@ function applyLang(){
   document.querySelector('[data-tab=refer]').textContent=t('tabRefer');
   var em=document.getElementById('emptyMsg'); if(em) em.innerHTML=t('emptyState');
   populateLayerSelect();renderLegend();
-  document.querySelectorAll('#langToggle span').forEach(s=>{s.className=s.dataset.lang===lang?'lt-active':'lt-inactive';});
+  document.querySelectorAll('#langToggle button').forEach(s=>{const on=s.dataset.lang===lang;s.className=on?'lt-active':'lt-inactive';s.setAttribute('aria-pressed',on?'true':'false');});
   document.querySelectorAll('.tf-btn').forEach(b=>{const on=b.dataset.tf===travelerType; b.classList.toggle('active',on); b.setAttribute('aria-pressed', on?'true':'false');});
   si.setAttribute('aria-label', t('search'));
   const snap=document.getElementById('snapshotBadge'); if(snap) snap.textContent=t('snapshot');
@@ -475,7 +504,7 @@ function populateLayerSelect(){
   document.getElementById('layerLabel').textContent=t('colorBy');
 }
 document.getElementById('layerSelect').addEventListener('change',function(){activeLayer=this.value;updateMapColors();renderLegend();writeUrl();});
-document.querySelectorAll('#langToggle span').forEach(s=>s.addEventListener('click',()=>{lang=s.dataset.lang;applyLang();writeUrl();}));
+document.querySelectorAll('#langToggle button').forEach(s=>s.addEventListener('click',()=>{lang=s.dataset.lang;applyLang();writeUrl();}));
 
 
 function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));}
@@ -493,10 +522,10 @@ function writeUrl(){
 }
 function readUrl(){
   const q=new URLSearchParams(location.search);
-  const lg=q.get('lang'); if(lg==='en'||lg==='ar') lang=lg;
-  const tf=q.get('group'); if(['standard','pregnant','child','immuno'].includes(tf)) travelerType=tf;
-  const layer=q.get('layer'); if(['overall','malaria','yf','arbo','vaccine'].includes(layer)) activeLayer=layer;
-  const iso=(q.get('dest')||'').toUpperCase();
+  const lg=(q.get('lang')||'').trim().toLowerCase(); if(lg==='en'||lg==='ar') lang=lg;
+  const tf=(q.get('group')||'').trim().toLowerCase(); if(['standard','pregnant','child','immuno'].includes(tf)) travelerType=tf;
+  const layer=(q.get('layer')||'').trim().toLowerCase(); if(['overall','malaria','yf','arbo','vaccine'].includes(layer)) activeLayer=layer;
+  const iso=(q.get('dest')||'').trim().toUpperCase();
   if(/^[A-Z]{3}$/.test(iso) && byIso[iso]) selected=byIso[iso];
 }
 function renderSafety(){ /* #safetyBanner is the static bilingual disclaimer; do not replace it */ }
@@ -558,9 +587,14 @@ document.getElementById('copyLinkBtn').addEventListener('click', async ()=>{
   catch(e){ const ta=document.createElement('textarea'); ta.value=location.href; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); }
   showToast(t('linkCopied'),'success');
 });
-function syncHeader(){const h=document.querySelector('header'); if(h) document.documentElement.style.setProperty('--header-h', (h.offsetHeight+document.getElementById('safetyBanner').offsetHeight)+'px');}
+function syncHeader(){const h=document.querySelector('header'); const b=document.getElementById('safetyBanner'); if(h) document.documentElement.style.setProperty('--header-h', (h.offsetHeight+(b?b.offsetHeight:0))+'px');}
+function fitMap(){syncHeader(); if(map&&map.resize) map.resize();}
 syncHeader();
-window.addEventListener('resize',()=>{clearTimeout(window._rs); window._rs=setTimeout(()=>{syncHeader(); if(map) map.resize();},150);});
+window.addEventListener('resize',()=>{clearTimeout(window._rs); window._rs=setTimeout(fitMap,120);});
+if(window.ResizeObserver){
+  const box=document.getElementById('mapContainer');
+  if(box) new ResizeObserver(()=>{clearTimeout(window._ro); window._ro=setTimeout(()=>{ if(map&&map.resize) map.resize(); },80);}).observe(box);
+}
 
 </script>
 </body>
